@@ -8,4 +8,4 @@ add question
 add answer 
 timer for question
 result all quiz
-line to wschool
+like to wschool
