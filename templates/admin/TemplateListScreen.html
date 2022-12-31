@@ -1,0 +1,35 @@
+{% extends 'admin/index.html' %}
+{% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+<a href="{% url 'admin_dashboard' %}">
+     برگشت
+</a>
+        <div class="row justify-content-md-center">
+                <div class="col-lg-8">
+                                <fieldset>
+                                        <legend><h1 class="title-page">لیست تم</h1></legend>
+                                        <table class="table table-hover">
+                                                <thead class="table-lite">
+                                                        <tr>
+                                                                <th>ردیف</th>
+                                                                <th>نام</th>
+                                                        </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for template in template %}
+                                                <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ template.name }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                        </table>
+                                </fieldset>
+                </div>
+        </div>
+</div>
+{% endblock %}

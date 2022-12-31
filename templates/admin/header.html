@@ -1,0 +1,68 @@
+{% load static %}
+{% load i18n %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="http://localhost:8000/">Msn80</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    {% if not request.user.id %}
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'admin_dashboard' %}">داشبورد
+            <span class="visually-hidden">{{ request.user.username }}</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'login-admin' %}">ورود</a>
+          </a>
+        </li>
+      </ul>
+    </div>
+    {% else %} 
+    {% if request.user.is_superuser == 1 %}
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'admin_dashboard' %}">داشبورد
+            <span class="visually-hidden">{{ request.user.username }}</span>
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'template_create' %}">ایجاد تم</a>
+            <a class="dropdown-item" href="{% url 'confirmed_exam_list' %}">لیست آزمون ها</a>
+            <a class="dropdown-item" href="{% url 'confirmed_quiz_list' %}">لیست آزمون های</a>
+            <div class="dropdown-divider"></div>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">سفارشات مشتریان</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'loginout-admin' %}">خروج</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    {% else %}
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'admin_dashboard' %}">داشبورد
+            <span class="visually-hidden">{{ request.user.username }}</span>
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">منو</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'login-admin' %}">ورود</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    {% endif %}
+    {% endif %}
+  </div>
+</nav>

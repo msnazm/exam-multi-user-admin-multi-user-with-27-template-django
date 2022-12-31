@@ -1,0 +1,43 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+<a href="{% url 'dashboard' %}">
+     برگشت
+</a>
+        <div class="row justify-content-md-center">
+                <div class="col-lg-8">
+                        <form method="POST" novalidate>
+                                {% csrf_token %}
+                                <div hidden>
+                                        <input type="text" value="{{ request.user.id }}" name="user" required="" id="id_user">
+                                        <input type="text" value="{{ pk }}" name="exam" required="" id="id_exam">
+                                </div>
+                                <fieldset>
+                                        <legend><h1 class="title-page">ایجاد تماس با ما</h1></legend>
+                                        {{ form.media }}
+                                        <div class="form-group">
+                                                <label class="col-form-label mt-4" for="name">توضیحات</label>
+                                                {% if form.descreption.errors %}
+                                                {% render_field form.descreption class="form-control is-invalid" %}
+                                                {% for error in form.descreption.errors %}
+                                                <div  style="text-align: right;color:#dc3545;">
+                                                                <b>{{ error|escape }}</b>    
+                                                </div>
+                                                {% endfor %}
+                                                {% elif form.descreption.value %}
+                                                {% render_field form.descreption class="form-control is-valid" %}
+                                                {% else %} 
+                                                {% render_field form.descreption class="form-control" %}
+                                                {% endif %}                                                
+                                        </div>
+                                        <br>
+                                        <button type="submit" class="btn btn-primary" name="Save_list">ثبت</button>
+                                </fieldset>
+                        </form>
+                </div>
+        </div>
+</div>
+{% endblock %}

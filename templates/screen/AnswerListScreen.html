@@ -1,0 +1,48 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+<a href="{% url 'dashboard' %}">
+     برگشت
+</a>
+        <div class="row justify-content-md-center">
+                <div class="col-lg-8">
+                                <fieldset>
+                                        <legend><h1 class="title-page">لیست جواب ها</h1></legend>
+                                        <table class="table table-hover">
+                                                <thead class="table-lite">
+                                                        <tr>
+                                                                <th>ردیف</th>
+                                                                <th>تاریخ ایجاد</th>
+                                                                <th>ازمون</th>
+                                                                <th>سوال</th>
+                                                                <th>جواب</th>
+                                                                <th></th>
+                                                        </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for answer in answer %}
+                                                <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ answer.datecreate }}</td>
+                                                        <td>{{ answer.question.quiz.name }}</td>
+                                                        <td>{{ answer.question.descreption|slice:20|safe }}</td>
+                                                        <td>{{ answer.descreption|slice:20|safe }}</td>
+                                                        <td>   
+                                                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">عملیات</a>
+                                                                <div class="dropdown-menu">
+                                                                        <a class="dropdown-item" href="{% url 'answer_edit' answer.pk %}">اصلاح</a>
+                                                                        <a class="dropdown-item" href="{% url 'answer_delete' answer.pk %}">حذف</a>
+                                                                </div>
+                                                        </td>
+                                                </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                        </table>
+                                </fieldset>
+                </div>
+        </div>
+</div>
+{% endblock %}

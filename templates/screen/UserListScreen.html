@@ -1,0 +1,48 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
+{% load l10n %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+<a href="{% url 'dashboard' %}">
+     برگشت
+</a>
+        <div class="row justify-content-md-center">
+                <div class="col-lg-8">
+                                <fieldset>
+                                        <legend><h1 class="title-page">لیست کاربران من</h1></legend>
+                                        <table class="table table-hover">
+                                                <thead class="table-lite">
+                                                        <tr>
+                                                                <th>ردیف</th>
+                                                                <th>تاریخ ایجاد</th>
+                                                                <th>نام کاربر</th>
+                                                                <th>نام</th>
+                                                                <th>نام و نام خانوادگی</th>
+                                                        </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for user_list in user_list %}
+                                                <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ user_list.date_joined|naturaltime }}</td>
+                                                        <td>{{ user_list.username }}</td>
+                                                        <td>{{ user_list.first_name }}</td>
+                                                        <td>{{ user_list.last_name }}</td>
+                                                        <td>   
+                                                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">عملیات</a>
+                                                                <div class="dropdown-menu">
+                                                                        <a class="dropdown-item" href="{% url 'user_perm' user_list.pk %} ">فعال/غیرفعال</a>
+                                                                </div>
+                                                        </td>
+                                                </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                        </table>
+                                </fieldset>
+                </div>
+        </div>
+</div>
+{% endblock %}

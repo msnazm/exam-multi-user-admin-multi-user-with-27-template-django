@@ -1,0 +1,45 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="row justify-content-md-center">
+        <div class="col-lg-4">
+                <form method="POST">
+                        {% csrf_token %}
+                        <fieldset>
+                                <legend><h1 class="title-page">ورود مدیران آزمون</h1></legend>
+                                {% if form.errors %}
+                                <div class="alert alert-danger"  align="center">
+                                نام کاربری و رمز عبور شما مطابقت ندارد، لطفاً دوباره امتحان کنید.
+                                </div>
+                                {% endif %} 
+                                <div class="form-group {% if form.username.errors %}has_error{% elif form.is_bound %}has_success{% endif %}">
+                                        <label class="col-form-label mt-2" for="username">نام کاربری</label>
+                                        <input type="text" class="form-control" placeholder="نام کاربری" name="username" id="username">
+                                        {% if form.username.errors %}
+                                        {% for error in form.username.errors %}
+                                        <div  style="text-align: right;color:#dc3545;">
+                                                <b>{{ error|escape }}</b>    
+                                        </div>
+                                        {% endfor %}
+                                        {% endif %}
+                                </div>
+                                <div class="form-group {% if form.password.errors %}has_error{% elif form.is_bound %}has_success{% endif %}">
+                                        <label for="Password" class="form-label mt-4">رمز کاربر</label>
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="رمز کاربر">
+                                        {% if form.password.errors %}
+                                        {% for error in form.password.errors %}
+                                        <div  style="text-align: right;color:#dc3545;">
+                                                <b>{{ error|escape }}</b>    
+                                        </div>
+                                        {% endfor %}
+                                        {% endif %}
+                                </div>
+                                <br>
+                                <button type="submit" class="btn btn-primary">ورود</button>
+                                <a href="{% url 'signup' %}" class="btn btn-link">ثبت نام</a>
+                        </fieldset>
+                </form>
+        </div>
+</div>
+{% endblock %}

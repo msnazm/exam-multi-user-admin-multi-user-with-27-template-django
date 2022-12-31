@@ -1,0 +1,7 @@
+{% extends 'admin/index.html' %}
+{% load static %}
+{% block content %}
+{% if request.user.is_superuser == 1 %}
+<h1 class="title-page">test</h1>\
+{% endif %}
+{% endblock %}

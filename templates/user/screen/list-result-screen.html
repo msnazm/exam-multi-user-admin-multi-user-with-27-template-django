@@ -1,0 +1,44 @@
+{% extends 'user/index.html' %}
+{% load static %}
+{% load humanize %}
+{% load l10n %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+<a href="{% url 'dashboard_user' %}">
+     برگشت
+</a>
+        <div class="row justify-content-md-center">
+                <div class="col-lg-8">
+                        <fieldset>
+                                <legend><h1 class="title-page">لیست نتایج آزمون های من</h1></legend>
+                                <table class="table table-hover">
+                                        <tr>
+                                                <th>تصویر</th>
+                                                <th>نام</th>
+                                                <th>زمان صرف شده</th>
+                                                <th></th>
+                                        </tr>
+                                        {% for list_quiz in list_quiz %}
+                                        <tr>
+                                                <td><img class="image-list" src="{% static list_quiz.image.url %}" ></td>
+                                                <td>{{ list_quiz.name }}</td>
+                                                <td>
+                                                {% if sum_time_h.time_h == 0 %}
+                                                        {{ sum_time_m.time_m }} دقیقه {{ sum_time_s.time_s }} ثانیه
+                                                {% elif sum_time_m.time_m == 0 %}
+                                                        {{ sum_time_s.time_s }} ثانیه
+                                                {% endif %}
+                                                </td>
+                                                <td>   
+                                                        <a class="fa fa-eye" href="{% url 'details_result_user' list_quiz.pk %}" ></a>
+                                                </td>
+                                        {% empty %}
+                                        {% endfor %}
+                                        </tr>
+                                </table>
+                        </fieldset>
+                </div>
+        </div>
+{% endblock %}

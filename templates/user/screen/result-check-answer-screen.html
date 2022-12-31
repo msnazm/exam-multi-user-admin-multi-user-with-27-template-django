@@ -1,0 +1,68 @@
+{% extends 'user/index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load l10n %}
+{% load humanize %}
+{% block content %}
+<div>
+  <a href="{% url 'quiz_start' quiz.pk quiz.slug %}">
+       برگشت
+  </a>
+  <div class="row justify-content-md-center">
+    <div class="col-lg-8">
+            <fieldset>
+                    <legend><h1 class="title-page">نتیجه آزمون {{ quiz.name }}</h1></legend>
+                    <p style="text-align: center;font-weight: bold;"> {{ answer_correct_count }} از {{ count_question }}  =========  {{ percent_correct|floatformat:0|intcomma }}%</p>
+                    {% for answers in answers %}
+                    <p style="font-weight: bold;font-size: large;"> سوال : {{ forloop.counter }}</p>
+                    <div class="two">
+                      <p>{{ answers.descreption|safe }}</p> / 
+                      {% for choice in repead_id_list %}  
+                      {% if choice.question_id == answers.pk %}
+                        <p> {% if choice.timespent_m == 0 %}
+                            {{ choice.timespent_s }} ثانیه
+                            {% else %}                                    
+                              {{ choice.timespent_m }} دقیقه {{ choice.timespent_s }} ثانیه
+                            {% endif %}
+                        </p>
+                        {% if choice.answer_id == choice.answer.pk and choice.answer.correct_question == True %}
+                          <i class="fa fa-check" aria-hidden="true"></i>
+                          {% else %}
+                          <i class="fa fa-times" aria-hidden="true"></i>
+                        <span class="badge bg-danger">جواب شما : {{ choice.answer.descreption|safe }}</span>
+                        {% endif %}
+                      {% endif %}
+                      {% empty %}
+                      {% endfor %}
+                    </div>
+                    <table class="table table-striped">
+                            {% with answers.answer_related.all as ans %}
+                            {% for ans in ans %}
+                            <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ ans.descreption|safe }}</td>
+                                    <td>
+                                    {% if ans.correct_question == True %}
+                                    <li class="fa fa-check" >پاسخ صحیح</li>
+                                    {% endif %}
+                                    </td>
+                            </tr>
+                            {% empty %}
+                            {% endfor %}
+                            {% endwith %}
+                    </table>
+                    {% empty %}
+                    {% endfor %}
+            </fieldset>
+    </div>
+  </div>
+</div>
+{% block script %}
+<script type="text/javascript">
+  setTimeout(function () {
+   $('#flash').fadeOut('fast');
+   },3000);
+</script>
+{% endblock script %}
+{% endblock %}

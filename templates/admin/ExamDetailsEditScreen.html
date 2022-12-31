@@ -1,0 +1,48 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+<a href="{% url 'confirmed_exam_list' %}">
+     برگشت
+</a>
+        <div class="row justify-content-md-center">
+                <div class="col-lg-4">
+                        <div class="card mb-4">
+                                <div class="card-body">
+                                <h5 class="card-title">{{ exam.name }}</h5>
+                                <h6 class="card-subtitle text-muted">{{ exam.create_date|naturaltime }}</h6>
+                                </div>
+                                {% if exam.image %}
+                                <img class="imge-card" src="{% static exam.image.url %}" alt="{{ exam.name }}">
+                                {% else %}
+                                <img class="imge-card" src="static/img/placeholder.png" alt="{{ exam.name }}">
+                                {% endif %}
+                                <div class="card-body">
+                                <p class="card-text">{{ exam.descreption|slice:20 }}</p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                </ul>
+                                <div class="card-body">
+                                <a target="_blank" href="{% url 'quiz-list-exam' exam.pk %}" class="stretched-link"></a>
+                                <p>تاریخ ایجاد: {{ exam.datecreate }}</p>
+                                {% if exam.confirmed == 0 %}
+                                <span class="badge bg-warning">منتظر تایید</span>
+                                {% else %}
+                                <span class="badge bg-success">تایید شده</span>
+                                {% endif %}
+                                </div>
+                        </div>
+                        <form class="d-flex" method="POST">
+                          {% csrf_token %}
+                          <div class="form-check">
+                            <input type="hidden" value="1" name="checkt"> 
+                            <button class="btn btn-primary" type="submit">تایید</button>
+                          </div>
+                        </form>
+                </div>
+        </div>
+</div>
+{% endblock %}

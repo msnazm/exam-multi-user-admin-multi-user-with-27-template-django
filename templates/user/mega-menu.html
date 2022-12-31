@@ -1,0 +1,59 @@
+{% load static %}
+  <div class="col-12">
+   <nav class="navbar navbar-expand-lg">
+    {% if exam.pk %}
+    <a class="navbar-brand" href="{% url 'quiz-list-exam' exam.pk %}">آزمون های</a>
+    {% else %} 
+    <a class="navbar-brand" href="http://localhost:8000/">آزمون های</a>
+    {% endif %}
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbars" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+    <div class="collapse navbar-collapse" id="navbar">
+     <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown megamenu-li">
+       <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">دسته بندی آزمون ها</a>
+       <div class="dropdown-menu megamenu" aria-labelledby="dropdown01">
+        <div class="row">
+            <div class="col-sm-6 col-lg-4">
+                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                    {% for obj in quizs %}
+                        {% if forloop.first %}
+                    <div class="carousel-item active">
+                        {% else %}
+                    <div class="carousel-item">
+                        {% endif %}
+                    <img class="d-block w-50" src="{% static obj.image.url %}" alt="{{obj.name}}">
+                    <div class="carousel-caption" style="color: black;">
+                        <a target="_blank" href="" class="stretched-link"></a>
+                        <p>{{obj.name}}</p>
+                        <p>{{obj.price}}</p>
+                    </div>
+                    </div>
+                    {% endfor %}
+                    </div>
+                    </div>
+                </div>
+        {% for category in category %}
+            <div class="col-sm-2 col-lg-2">
+            <a target="_blank" class="dropdown-item" href="{% url 'quiz_category_exam' category.pk category.exam_id category.slug %}"><h5>{{ category.name }}</h5></a>
+                {% with category.sub.all as sub %}
+                {% for sub in sub %}
+                <a target="_blank" class="dropdown-item" style="font-weight: bold;" href="{% url 'quiz_subcategory_exam' sub.pk sub.exam_id sub.slug %}">{{ sub.name }}</a>
+                    {% with sub.subs.all as subs %}
+                    {% for subs in subs %}
+                    <a target="_blank" class="dropdown-item" href="{% url 'quiz_subscategory_exam' subs.pk subs.exam_id subs.slug %}">{{ subs.name }}</a>
+                    {% endfor %}
+                    {% endwith %}
+                {% endfor %}
+                {% endwith %}
+            </div>
+        {% endfor %}
+        </div>
+       </div>
+      </li>
+     </ul>
+    </div>
+   </nav>
+  </div>

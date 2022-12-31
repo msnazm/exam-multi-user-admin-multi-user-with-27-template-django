@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+<a href="{% url 'subscategory-list' %}">
+     برگشت
+</a>
+        <div class="row justify-content-md-center">
+                <div class="col-lg-4">
+                        <form method="POST" novalidate>
+                                {% csrf_token %}
+                                <div hidden>
+                                        {{ form.datecreate }}
+                                        {{ form.datecreatealt }}
+                                        <input type="text" value="{{ request.user.id }}" name="user" required="" id="id_user">
+                                        {{ form.slug }}
+                                        {{ form.subcategory }}
+                                        {{ form.exam }}
+                                </div>
+                                <fieldset>
+                                        <legend><h1 class="title-page">اصلاح زیر زیر دسته</h1></legend>
+                                        <div class="form-group">
+                                                <label class="col-form-label mt-4" for="name">نام دسته</label>
+                                                {% if form.name.errors %}
+                                                {% render_field form.name class="form-control is-invalid" %}
+                                                {% for error in form.name.errors %}
+                                                <div  style="text-align: right;color:#dc3545;">
+                                                                <b>{{ error|escape }}</b>    
+                                                </div>
+                                                {% endfor %}
+                                                {% elif form.name.value %}
+                                                {% render_field form.name class="form-control is-valid" %}
+                                                {% else %} 
+                                                {% render_field form.name class="form-control" %}
+                                                {% endif %}                                                
+                                        </div>
+                                        <br>
+                                        <button type="submit" class="btn btn-primary">ثبت</button>
+                                        <button type="submit" class="btn btn-primary">ثبت و ایجاد یکی دیگر</button>
+                                </fieldset>
+                        </form>
+                </div>
+        </div>
+</div>
+{% endblock %}

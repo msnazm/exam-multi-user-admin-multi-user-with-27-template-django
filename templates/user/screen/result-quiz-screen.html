@@ -1,0 +1,59 @@
+{% extends 'user/index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load l10n %}
+{% load humanize %}
+{% block content %}
+<div>
+  <a href="{% url 'quiz_start' quiz.pk quiz.slug %}">
+       برگشت
+  </a>
+  <div class="row justify-content-md-center">
+    <div class="col-lg-6">
+      <div class="card mb-3">
+        <h3 class="card-header">آزمون {{ quiz.name }}</h3>
+        <img src="{% static quiz.image.url %}" class="imge-card" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle" />
+        <div class="card-body">
+          <p class="card-text">نتیجه {{ answer_correct_count }} از {{ count_question }}  =========  {{ percent_correct|floatformat:0|intcomma }} %</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">زمان صرف شده : 
+            {% if sum_time_h.time_h == 0 %}
+              {{ sum_time_m.time_m }} دقیقه {{ sum_time_s.time_s }} ثانیه
+            {% elif sum_time_m.time_m == 0 %}
+              {{ sum_time_s.time_s }} ثانیه
+            {% endif %}
+          </li>
+          {% if percent_correct <= 25 %}
+          <li class="list-group-item">شما باید بسیار سخت تر مطالعه کنید!</li>
+          {% endif %}
+          {% if percent_correct > 25 and percent_correct < 51 %}
+          <li class="list-group-item">شما نیاز بیشتری به مطالعه دارید!</li>
+          {% endif %}
+          {% if percent_correct >= 51 and percent_correct <= 90 %}
+          <li class="list-group-item">شما خوب مطالعه کردید.</li>
+          {% endif %}
+          {% if percent_correct >= 91 %}
+          <li class="list-group-item">شما خیلی خوب مطالعه کردید.</li>
+          {% endif %}
+        </ul>
+        <div class="card-body">
+          <a href="{% url 'quiz_while' quiz.pk quiz.exam_id %}" name="agian_start" class="btn btn-info">تلاش دوباره</a>
+          <a href="{% url 'check_answer_result' quiz.pk repead_id %}" name="agian_start" class="btn btn-info">پاسخ هایتان را بررسی کنید</a>
+        </div>
+        <div class="card-footer text-muted">
+          {{ quiz.create_date|naturaltime }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% block script %}
+<script type="text/javascript">
+  setTimeout(function () {
+   $('#flash').fadeOut('fast');
+   },3000);
+</script>
+{% endblock script %}
+{% endblock %}

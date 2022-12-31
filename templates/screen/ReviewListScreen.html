@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+<a href="{% url 'dashboard' %}">
+     برگشت
+</a>
+        <div class="row justify-content-md-center">
+                <div class="col-lg-8">
+                                <fieldset>
+                                        <legend><h1 class="title-page">لیست نظرات من</h1></legend>
+                                        <table class="table table-hover">
+                                                <thead class="table-lite">
+                                                        <tr>
+                                                                <th>ردیف</th>
+                                                                <th>تاریخ ایجاد</th>
+                                                                <th>نام آزمون</th>
+                                                                <th>کامنت</th>
+                                                        </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for review_list in review_list %}
+                                                <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ review_list.datecreate }}</td>
+                                                        <td>{{ review_list.quiz.name }}</td>
+                                                        <td>{{ review_list.comment }}</td>
+                                                        <td>   
+                                                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">عملیات</a>
+                                                                <div class="dropdown-menu">
+                                                                        <a class="dropdown-item" href="{% url 'review_delete' review_list.pk %}">حذف</a>
+                                                                </div>
+                                                        </td>
+                                                </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                        </table>
+                                </fieldset>
+                </div>
+        </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'user/index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load l10n %}
+{% load humanize %}
+{% block content %}
+<div>
+  <a href="{% url 'quiz-list-exam' quizs.exam.pk %}">
+       برگشت
+  </a>
+  <div class="row justify-content-md-center">
+    <div class="col-lg-6">
+      <div class="card mb-3">
+        <h3 class="card-header">آزمون {{ quizs.name }}</h3>
+        <div class="card-body">
+          <h5 class="card-title">{{ quizs.category.name }}/{{ quizs.subcategory.name }}/{{ quizs.subscategory.name }}</h5>
+          <h6 class="card-subtitle text-muted">{{ quizs.datecreate }}</h6>
+        </div>
+        <img src="{% static quizs.image.url %}" class="imge-card" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle" />
+        <div class="card-body">
+          <p class="card-text">شما می توانید مهارت های {{ quizs.name }} خود را با آزمون {{  quizs.exam.name }} تست کنید.</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">تست شامل {{ question_count }} سوال است و محدودیت زمانی وجود ندارد.</li>
+        </ul>
+        <div class="card-body">
+          <a href="{% url 'quiz_while' quizs.pk quizs.exam_id %}" class="btn btn-info">شروع آزمون</a>
+        </div>
+        <div class="card-footer text-muted">
+          {{ quizs.create_date|naturaltime }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% block script %}
+<script type="text/javascript">
+  setTimeout(function () {
+   $('#flash').fadeOut('fast');
+   },3000);
+</script>
+{% endblock script %}
+{% endblock %}

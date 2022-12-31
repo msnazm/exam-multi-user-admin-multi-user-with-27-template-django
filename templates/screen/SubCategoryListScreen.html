@@ -1,0 +1,54 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block content %}
+<div>
+<a href="{% url 'dashboard' %}">
+     برگشت
+</a>
+        <div class="row justify-content-md-center">
+                <div class="col-lg-9">
+                                <fieldset>
+                                        <legend><h1 class="title-page">لیست زیر دسته ها</h1></legend>
+                                        <table class="table table-striped table-hover">
+                                                <tr>
+                                                        <th>ردیف</th>
+                                                        <th>دسته اصلی</th>
+                                                        <th>تاریخ ایجاد</th>
+                                                        <th>نام</th>
+                                                        <th></th>
+                                                </tr>
+                                                {% if delete_cat == 1 %} 
+                                                <tr><td colspan="5">این دسته در آزمون های ثبت شده است و نمی توانید آن را حذف کنید.<a href="{% url 'subcategory-list' %}">برگشت به لیست</a></td></tr>
+                                                {% else %}
+                                                {% for subcategory in subcategory %}
+                                                <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ subcategory.category.name }}</td>
+                                                        <td>{{ subcategory.create_date|naturaltime }}</td>
+                                                        <td>{{ subcategory.name }}</td>
+                                                        <td><div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                                                <div class="btn-group" role="group">
+                                                                  <button id="btnGroupDrop1" type="button" class="btn btn-lite dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    عملیات
+                                                                  </button>
+                                                                  <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                                    <li><a class="dropdown-item" href="{% url 'subcategory-delete' subcategory.pk %}">حذف</a></li>
+                                                                    <li><a class="dropdown-item" href="{% url 'subcategory-edit' subcategory.pk %}">ویرایش</a></li>
+                                                                    <div class="dropdown-divider"></div>
+                                                                    <li><a class="dropdown-item" href="{% url 'subscategory-create' subcategory.pk subcategory.exam_id %}">ایجاد زیر دسته</a></li>
+                                                                  </ul>
+                                                                </div>
+                                                              </div>
+                                                        </td>
+                                                </tr>
+                                                {% endfor %}
+                                                {% endif %}
+                                        </table>
+                                </fieldset>
+                </div>
+        </div>
+</div>
+{% endblock %}

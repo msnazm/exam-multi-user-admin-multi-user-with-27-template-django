@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load tz %}
+{% block content %}
+{% if user.is_superuser %}
+<section class="content">
+<div class="row">
+
+ <!-- Main content -->
+     <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">لیست کاربران</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="listfaza" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>ردیف</th>
+                  <th>کاربر</th>
+                  <th>نام</th>
+               <th>نام و نام خانوادگی</th>
+                  <th>ابر کاربر</th>
+                  <th>امکانات</th>
+                </tr>
+                </thead>
+                <tbody>
+               {% for userlists in userlist %}
+                <tr>
+              <td><b>{{forloop.counter}}</b></td>
+                  <td>{{ userlists.username }}</td>
+                  <td>{{ userlists.first_name }}</td>
+                <td>{{ userlists.last_name }}</td>
+                {% if userlists.is_superuser == True %}
+                  <td style="color: green">فعال</td>
+                {% else %}
+                  <td style="color: red">غیر فعال</td>
+                {% endif %}
+                <td><a class="fa fa-key" title="اصلاح رمز کاربر" style="color:blue" href="{% url 'user_update' userlists.id %}" ></a>
+                 {% if userlists.is_superuser == False %}
+                <a class="fa fa-user" title="ایجاد دسترسی" style="color:green" href="{% url 'user_perm' userlists.id %}" ></a>
+                <a class="fa fa-trash" title="حذف کاربر" style="color:red" href="{% url 'user_delete' userlists.id %}" ></a></td>
+
+                {% endif %}
+                </tr>
+          {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+       <th>ردیف</th>
+                  <th>کاربر</th>
+                  <th>نام</th>
+               <th>نام و نام خانوادگی</th>
+                  <th>ابر کاربر</th>
+                  <th>امکانات</th>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+     </div>
+</div>   
+
+
+<!---->
+</div>
+</section>
+{% endif %}
+{% endblock content %}

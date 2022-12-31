@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+<a href="{% url 'dashboard' %}">
+     برگشت
+</a>
+        <div class="row justify-content-md-center">
+                <div class="col-lg-8">
+                                <fieldset>
+                                        <legend><h1 class="title-page">لیست دسته اصلی</h1></legend>
+                                        <table class="table table-hover">
+                                                <thead class="table-lite">
+                                                        <tr>
+                                                                <th>ردیف</th>
+                                                                <th>تاریخ ایجاد</th>
+                                                                <th>نام</th>
+                                                                <th></th>
+                                                        </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% if delete_cat == 1 %} 
+                                                        <tr><td colspan="4">این دسته در آزمون های ثبت شده است و نمی توانید آن را حذف کنید.<a href="{% url 'category-list' %}">برگشت به لیست</a></td></tr>
+                                                {% else %}
+                                                {% for category in category %}
+                                                <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ category.create_date|naturaltime }}</td>
+                                                        <td>{{ category.name }}</td>
+                                                        <td>   
+                                                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">عملیات</a>
+                                                                <div class="dropdown-menu">
+                                                                        <a class="dropdown-item" href="{% url 'category-delete' category.pk %}">حذف</a>
+                                                                        <a class="dropdown-item" href="{% url 'category-edit' category.pk %}">اصلاح</a>
+                                                                        <div class="dropdown-divider"></div>
+                                                                        <a class="dropdown-item" href="{% url 'subcategory-create' category.pk category.exam_id %}">ایجاد زیر دسته</a>
+                                                                </div>
+                                                        </td>
+                                                </tr>
+                                                {% endfor %}
+                                                {% endif %}
+                                                </tbody>
+                                        </table>
+                                </fieldset>
+                </div>
+        </div>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'user/index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load l10n %}
+{% block content %}
+<div class="row justify-content-md-center">
+  <div class="col-lg-4" style="padding-top: 100px;">
+        {{ contactus.descreption|safe }}
+  </div>
+</div>
+{% endblock %}

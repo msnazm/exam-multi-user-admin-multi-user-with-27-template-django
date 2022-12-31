@@ -1,0 +1,58 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load humanize %}
+{% load l10n %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+<a href="{% url 'dashboard' %}">
+     برگشت
+</a>
+        <div class="row justify-content-md-center">
+                <div class="col-lg-10">
+                        <fieldset>
+                                <legend><h1 class="title-page">لیست تکمیل شده سفارشات مشتریان شما</h1></legend>
+                                <table class="table table-striped">
+                                        <tr>
+                                                <th>ردیف</th>
+                                                <th>نام کاربری</th>
+                                                <th>تاریخ</th>
+                                                <th>هزینه</th>
+                                                <th>شهر</th>
+                                                <th>آدرس</th>
+                                                <th>کد آزمونی</th>
+                                                <th>تسویه</th>
+                                                <th>تحویل</th>
+                                                <th></th>
+                                        </tr>
+                                        {% for order in order %}
+                                        <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ order.user.username }}</td>
+                                                <td>{{ order.order.finalAt|naturaltime }}</td>
+                                                <td>{{ order.order.totalPrice }}</td>
+                                                <td>{{ order.city }}</td>
+                                                <td>{{ order.address }}</td>
+                                                <td>{{ order.postalCode|unlocalize }}</td>
+                                                {% if order.order.isPaid == 1 %}
+                                                <td><i class='fas fa-check'></i></td>
+                                                {% else %}
+                                                <td><i class="fa fa-times"></i></td>
+                                                {% endif %}
+                                                {% if order.order.isDelivered == 1 %}
+                                                <td><i class='fas fa-check'></i></td>
+                                                {% else %}
+                                                <td><i class="fa fa-times"></i></td>
+                                                {% endif %}
+                                                <td>         
+                                                <a href="{% url 'shopping_details_user_order_admin' order.pk %}" class="btn btn-link">مشاهده</a>
+                                                </td>
+                                        </tr>  
+                                        {% empty %}
+                                        {% endfor %}
+                                </table>
+                        </fieldset>
+                </div>
+        </div>
+{% endblock %}

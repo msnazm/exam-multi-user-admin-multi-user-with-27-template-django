@@ -1,0 +1,39 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+<a href="{% url 'dashboard' %}">
+     برگشت
+</a>
+        <div class="row justify-content-md-center">
+                <div class="col-lg-8">
+                        <div class="row">
+                                {% for template in template %}
+                                   <div class="col-lg-3">
+                                        <div class="card mb-3">
+                                            <div class="card-body">
+                                            <h5 class="card-title">{{ template.name }}</h5>
+                                            </div>
+                                            {% if template.image %}
+                                            <img class="imge-card" src="{% static template.image.url %}" alt="{{ template.name }}">
+                                            {% else %}
+                                            <img class="imge-card" src="static/img/placeholder.png" alt="{{ template.name }}">
+                                            {% endif %}
+                                            <div class="card-body">
+                                            </div>
+                                            <ul class="list-group list-group-flush">
+                                            </ul>
+                                            <div class="card-body">
+                                                <a href="{% url 'template_details' template.pk %}" class="stretched-link">مشاهده</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                        </div>
+                </div>
+        </div>
+</div>
+{% endblock %}

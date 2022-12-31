@@ -1,0 +1,63 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block content %}
+<div>
+<a href="{% url 'dashboard' %}">
+     برگشت
+</a>
+        <div class="row justify-content-md-center">
+                <div class="col-lg-8">
+                                <fieldset>
+                                        <legend><h1 class="title-page">لیست عکس های من</h1></legend>
+                                        <table class="table table-hover">
+                                                <thead class="table-lite">
+                                                        <tr>
+                                                                <th>ردیف</th>
+                                                                <th>تاریخ ایجاد</th>
+                                                                <th>نام</th>
+                                                                <th></th>
+                                                                <th>پیوند</th>
+                                                        </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for image in images %}
+                                                <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ image.create_date|naturaltime }}</td>
+                                                        <td>{{ image.name }}</td>
+                                                        <td><image id="{{ image.pk }}" style="width: 100px;height: 80px;" src="{% static image.image.url %}" /></td>
+                                                        <td><div align="center"><button class="btn btn-copy" onclick="copyToClipboard{{ image.pk }}();">کپی</button></div></td>
+                                                        <td>   
+                                                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">عملیات</a>
+                                                                <div class="dropdown-menu">
+                                                                        <a class="dropdown-item" href="{% url 'image_edit' image.pk %}">اصلاح</a>
+                                                                        <a class="dropdown-item" href="{% url 'image_delete' image.pk %}">حذف</a>
+                                                                </div>
+                                                        </td>
+                                                </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                        </table>
+                                </fieldset>
+                </div>
+        </div>
+</div>
+<script src="{% static 'jquery/jquery.min.js' %}"></script>
+<script>
+{% for image in images %}
+function copyToClipboard{{ image.pk }}(text) {
+var inputc = document.body.appendChild(document.createElement("input"));
+var can = $imgsrc = $('#{{ image.pk }}').attr('src');
+inputc.value = can;
+inputc.focus();
+inputc.select();
+document.execCommand('copy');
+inputc.parentNode.removeChild(inputc);
+alert("آدرس عکس مورد نظر کپی شد.");
+}
+{% endfor %}
+</script>
+{% endblock %}

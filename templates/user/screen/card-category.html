@@ -1,0 +1,43 @@
+{% extends 'user/index.html' %}
+{% load static %}
+{% load humanize %}
+{% load l10n %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-md-center">
+    {% for quizs in list_quiz_category %}
+    <div class="col-lg-2">
+            <div class="card mb-2">
+                <div class="card-body">
+                <h6 class="card-title">{{ quizs.name }}</h6>
+                <h6 class="card-subtitle text-muted">{{ quizs.brand }}</h6>
+                </div>
+                {% if quizs.image %}
+                <img class="imge-card" src="{% static quizs.image.url %}" alt="{{ quizs.name }}">
+                {% else %}
+                <img class="imge-card" src="static/img/placeholder.png" alt="{{ quizs.name }}">
+                {% endif %}
+                <div class="card-body">
+                <p class="card-text">{{ quizs.price }} تومان</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                </ul>
+                <div class="card-body">
+                    <a href="{% url 'quiz_start' quizs.pk quizs.slug %}" class="stretched-link" style="text-decoration: none;">
+                        <div class="review-feedback">
+                            <i class="fa fa-star {% if quizs.rating > 1 %} checked {% endif %}" aria-hidden="true"></i>
+                            <span class="fa fa-star {% if quizs.rating > 20 %} checked {% endif %}"></span>
+                            <span class="fa fa-star {% if quizs.rating > 30 %} checked {% endif %}"></span>
+                            <span class="fa fa-star {% if quizs.rating > 40 %} checked {% endif %}"></span>
+                            <span class="fa fa-star {% if quizs.rating > 50 %} checked {% endif %}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}

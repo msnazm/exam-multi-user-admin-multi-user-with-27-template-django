@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load l10n %}
+{% block content %}
+<a href="{% url 'template_card' %}">
+  برگشت
+</a>
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card mb-3" style="border: 0ch;">
+      <div class="card-body">
+        <h5 class="card-title">{{ template.name }}</h5>
+      </div>
+      <img src="{% static template.image.url %}" alt="{{ template.name }}">
+    </div>
+  </div>
+    <div class="col-lg-4">
+      <form method="POST">
+          {% csrf_token %}
+        <input type="hidden" name="template" value="{{ template.pk }}">
+        <div class="card bg-secondary mb-4" style="max-width: 20rem;border-radius:0px;margin-top: 80px;">
+          <div class="card-body">
+            <button type="submit" class="btn btn-primary">تغییر قالب</button>
+          </div>
+        </div>
+      </form>
+    </div>
+</div>
+{% endblock %}

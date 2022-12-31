@@ -1,0 +1,25 @@
+{% load static %}
+{% load humanize %}
+<div class="container">
+    <div class="row justify-content-md-center">
+    {% for quizs in quizs %}
+    <div class="col-lg-2">
+            <div class="card mb-2">
+                <div class="card-body">
+                <h6 class="card-title" style="text-align: center;">{{ quizs.name|slice:50 }}</h6>
+                <h6 class="card-subtitle text-muted">{{ quizs.create_date|naturaltime }}</h6>
+                </div>
+                {% if quizs.image %}
+                <img class="imge-card" src="{% static quizs.image.url %}" alt="{{ quizs.name }}">
+                {% else %}
+                <img class="imge-card" src="static/img/placeholder.png" alt="{{ quizs.name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h6 class="card-text" style="text-align: center;">{{ quizs.category.name }}</h6>
+                    <a href="{% url 'quiz_start' quizs.pk quizs.slug %}" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>

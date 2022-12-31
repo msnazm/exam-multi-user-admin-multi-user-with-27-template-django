@@ -1,0 +1,60 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+<a href="{% url 'dashboard' %}">
+     برگشت
+</a>
+        <div class="row justify-content-md-center">
+                <div class="col-lg-8">
+                                <fieldset>
+                                        <legend><h1 class="title-page">لیست آزمون های من</h1></legend>
+                                        <table class="table table-hover">
+                                                <thead class="table-lite">
+                                                        <tr>
+                                                                <th>ردیف</th>
+                                                                <th>تاریخ ایجاد</th>
+                                                                <th>نام</th>
+                                                                <th></th>
+                                                                <th></th>
+                                                        </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% if delete_cat == 1 %} 
+                                                        <tr><td colspan="4">این آزمون از طرف کاربران سفارش شده و نمی توانید آن را حذف کنید.<a href="{% url 'quiz-list' %}">برگشت به لیست</a></td></tr>
+                                                {% else %}
+                                                {% for quiz in quiz %}
+                                                <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ quiz.datecreate }}</td>
+                                                        <td>{{ quiz.name }}</td>
+                                                        <td>
+                                                        {% if quiz.confirmed == 0 %} 
+                                                        <span class="badge rounded-pill bg-warning">منتظر تایید</span>
+                                                        {% elif quiz.confirmed == 3 %} 
+                                                        <span class="badge rounded-pill bg-danger">تایید نشده</span>
+                                                        {% else %}
+                                                        <span class="badge rounded-pill bg-success">تایید شده</span>
+                                                        {% endif %}
+                                                        </td>
+                                                        <td>   
+                                                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">عملیات</a>
+                                                                <div class="dropdown-menu">
+                                                                        <a class="dropdown-item" href="{% url 'quiz-edit' quiz.pk %}">اصلاح</a>
+                                                                        <a class="dropdown-item" href="{% url 'quiz-delete' quiz.pk %}">حذف</a>
+                                                                        <div class="dropdown-divider"></div>
+                                                                        <a class="dropdown-item" href="{% url 'question_create' quiz.pk %}">ایجاد سوال</a>
+                                                                </div>
+                                                        </td>
+                                                </tr>
+                                                {% endfor %}
+                                                {% endif %}
+                                                </tbody>
+                                        </table>
+                                </fieldset>
+                </div>
+        </div>
+</div>
+{% endblock %}

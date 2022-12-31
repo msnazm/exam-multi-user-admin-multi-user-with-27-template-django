@@ -1,0 +1,199 @@
+{% extends 'user/index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+<a href="{% url 'dashboard' %}">
+     برگشت
+</a>
+        <div class="row justify-content-md-center">
+                <div class="col-lg-6">
+                        <fieldset>
+                                <legend><h2 class="title-page">لیست سفارشات شما</h2></legend>
+                                <ul class="nav nav-tabs">
+                                        <li class="nav-item">
+                                          <a class="nav-link {{ disabled_page }}" data-bs-toggle="tab" href="#adress">حمل و نقل</a>
+                                        </li>
+                                        <li class="nav-item">
+                                          <a class="nav-link {{ disabled_page_two }}" data-bs-toggle="tab" href="#pay">پرداخت</a>
+                                        </li>
+                                        <li class="nav-item">
+                                          <a class="nav-link" data-bs-toggle="tab" href="#result">سفارش شما</a>
+                                        </li>
+                                      </ul>
+                                      <form method="POST" novalidate>
+                                        {% csrf_token %}
+                                      <div id="myTabContent" class="tab-content">
+                                        <div class="tab-pane fade {{ adress_page }}" id="adress">
+                                          <input type="hidden" value="{{ pk }}" name="order" required="" id="id_order">
+                                          <input type="hidden" value="{{ request.user.id }}" name="user" required="" id="id_user">
+                                          <input type="hidden" value="{{ request.user.exam_id }}" name="exam" required="" id="id_exam">
+                                          <br>
+                                          <div class="form-group">
+                                            <label for="exampleSelect1" class="form-label">آدرس های قبلی</label>
+                                            <select class="form-control" name="select_address" id="select_address">
+                                              <option value="" selected>انتخاب کنید</option>
+                                              {% for select_address in select_address %}
+                                              <option value="{{ select_address.pk }}"> شهر : {{ select_address.city }} / آدرس: {{ select_address.address }} / کد آزمونی : {{ select_address.postalCode }}</option>
+                                              {% empty %}
+                                              <option value="" selected disabled>آدرسی از شما موجود نیست، آدرس جدید را ثبت کنید.</option>
+                                              {% endfor %}
+                                            </select>
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="col-form-label" for="city">شهر</label>
+                                            {% if form.city.errors %}
+                                            {% render_field form.city class="form-control is-invalid" %}
+                                            {% for error in form.city.errors %}
+                                            <div  style="text-align: right;color:#dc3545;">
+                                                            <b>{{ error|escape }}</b>    
+                                            </div>
+                                            {% endfor %}
+                                            {% elif form.city.value %}
+                                            {% render_field form.city class="form-control is-valid" %}
+                                            {% else %} 
+                                            {% render_field form.city class="form-control" %}
+                                            {% endif %}                                                
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="col-form-label" for="address">آدرس</label>
+                                            {% if form.address.errors %}
+                                            {% render_field form.address class="form-control is-invalid" %}
+                                            {% for error in form.address.errors %}
+                                            <div  style="text-align: right;color:#dc3545;">
+                                                            <b>{{ error|escape }}</b>    
+                                            </div>
+                                            {% endfor %}
+                                            {% elif form.address.value %}
+                                            {% render_field form.address class="form-control is-valid" %}
+                                            {% else %} 
+                                            {% render_field form.address class="form-control" %}
+                                            {% endif %}                                                
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="col-form-label" for="postalCode">کد آزمونی</label>
+                                            {% if form.postalCode.errors %}
+                                            {% render_field form.postalCode class="form-control is-invalid" %}
+                                            {% for error in form.postalCode.errors %}
+                                            <div  style="text-align: right;color:#dc3545;">
+                                                            <b>{{ error|escape }}</b>    
+                                            </div>
+                                            {% endfor %}
+                                            {% elif form.postalCode.value %}
+                                            {% render_field form.postalCode class="form-control is-valid" %}
+                                            {% else %} 
+                                            {% render_field form.postalCode class="form-control" %}
+                                            {% endif %}                                                
+                                          </div>
+                                          <br>
+                                          <button type="submit" class="btn btn-primary" name="Save_Adress">ادامه دهید</button>
+                                        </div>
+                                        <div class="tab-pane fade {{ py_page }}" id="pay">
+                                          <p>روش پرداخت در محل میباشد.</p>
+                                          <button type="submit" class="btn btn-primary" name="result_next">ادامه دهید</button>
+                                        </div>
+                                        <div class="tab-pane fade {{ result_page }}" id="result">
+                                          <br>
+                                          <h5>حمل و نقل</h5>
+                                          <label>آدرس</label>
+                                          <p>
+                                          {% if fill_order.selectaddress %}
+                                            {{ select_address_get.address }}
+                                          {% else %}
+                                          {{ fill_order.address }}
+                                          {% endif %}
+                                          </p>
+                                          <div class="dropdown-divider"></div>
+                                          <br>
+                                          <h5>روش پرداخت</h5>
+                                          <p>در محل دریافت شود</p>
+                                          <div class="dropdown-divider"></div>
+                                          <br>
+                                          <h5>سفارش اقلام</h5>
+                                            <table class="table table-striped">
+                                              <tr>
+                                                      <th>تصویر</th>
+                                                      <th>نام آزمون</th>
+                                                      <th>تعداد</th>
+                                                      <th>قیمت</th>
+                                                      <th>جمع قیمت</th>
+                                              </tr>
+                                              {% for orders in orders %}
+                                              <tr>
+                                                      <td><img class="image-list" src="{% static orders.quiz.image.url %}" ></td>
+                                                      <td>{{ orders.quiz.name }}</td>
+                                                      <td>{{ orders.countInOrder }}</td>
+                                                      <td>{{ orders.price }}</td>
+                                                      <td>{{ orders.total }}</td>
+                                              {% empty %}
+                                              {% endfor %}
+                                              </tr>
+                                            </table>
+                                          <div class="dropdown-divider"></div>
+                                        </div>
+                                      </div>
+                                      </form>
+                        </fieldset>
+                </div>
+                <div class="col-lg-4">
+                  <div class="card bg-secondary mb-4" style="max-width: 20rem;">
+                  <div class="card-header text-center"><h5>خلاصه سفارش</h5></div>
+                          <div class="card-body">
+                            <table>
+                              <tr>
+                                <td>
+                                  <h5>مبلغ</h5>
+                                </td>
+                                <td>
+                                  <h5>:</h5>
+                                </td>
+                                <td>
+                                  <h5>{{  order_sum_count.total_amount }}</h5>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <h5>هزینه ارسال</h5>
+                                </td>
+                                <td>
+                                  <h5>:</h5>
+                                </td>
+                                <td>
+                                  <h5>{{ fill_order.order.shippingPrice }}</h5>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <h5>جمع</h5>
+                                </td>
+                                <td>
+                                  <h5>:</h5>
+                                </td>
+                                <td>
+                                  <h5>{{ order_sum_count.total_amount }}</h5>
+                                </td>
+                              </tr>
+                            </table>
+                                  <div class="dropdown-divider"></div>
+                                  <div class="text-center">
+                                    {% if fill_order.pk %}
+                                          <a href="{% url 'shopping_details_user_order' fill_order.pk fill_order.order_id %}" class="btn btn-primary">تکمیل سفارش</a>
+                                    {% endif %}
+                                  </div>
+                          </div>
+                  </div>
+                </div>
+        </div>
+<script src="{% static 'jquery/jquery.min.js' %}"></script>
+<script>
+    $("#id_postalCode").keypress(function(e) {
+       var charCode = (e.which) ? e.which : event.keyCode;
+          if (charCode != 46 && charCode > 31 
+            && (charCode < 48 || charCode > 57))
+             return false;
+
+          return true;
+    });
+</script>
+{% endblock %}

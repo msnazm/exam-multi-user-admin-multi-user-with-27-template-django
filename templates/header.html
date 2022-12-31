@@ -1,0 +1,126 @@
+{% load static %}
+{% load i18n %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Msn80</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    {% if not request.user.id %}
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav me-auto">
+      {% if request.user.id and request.user.is_admin_exam == 1 %}
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'dashboard' %}">داشبورد
+            <span class="visually-hidden">{{ request.user.username }}</span>
+          </a>
+        </li>
+      {% endif %}
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'signup' %}">ثبت نام مدیران آزمون</a>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'login-admin-exam' %}">ورود مدیران آزمون</a>
+          </a>
+        </li>
+      </ul>
+    </div>
+    {% else %} 
+    {% if request.user.is_admin_exam == 1 %}
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'dashboard' %}">داشبورد
+            <span class="visually-hidden">{{ request.user.username }}</span>
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
+          <div class="dropdown-menu">
+            {% if request.user.exam_id %}
+            <a class="dropdown-item" href="{% url 'exam_create' %}">نمایش آزمون</a>
+            {% else %}
+            <a class="dropdown-item" href="{% url 'exam_create' %}">ایجاد آزمون</a>
+            {% endif %}
+            <a class="dropdown-item" href="{% url 'exam-list' %}">آزمون من</a>
+            <a class="dropdown-item" href="{% url 'template_card' %}">تغییر قالب آزمون</a>
+            <div class="dropdown-divider"></div>
+            {% if user.exam_id %}
+            <a class="dropdown-item" href="{% url 'category-create' request.user.exam_id %}">ایجاد دسته اصلی</a>
+            {% else %}
+            <a class="dropdown-item disabled" href="" disab>ایجاد دسته اصلی</a>
+            {% endif %}
+            <a class="dropdown-item" href="{% url 'category-list' %}">لیست دسته اصلی</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'subcategory-list' %}">لیست زیر دسته اصلی</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'subscategory-list' %}">لیست زیر زیر دسته اصلی</a>
+            <div class="dropdown-divider"></div>
+            {% if user.exam_id %}
+            <a class="dropdown-item" href="{% url 'quiz-create' request.user.exam_id %}">ایجاد آزمون</a>
+            {% else %}
+            <a class="dropdown-item disabled" href="" disab>ایجاد آزمون</a>
+            {% endif %}
+            <a class="dropdown-item" href="{% url 'quiz-list' %}">لیست آزمون ها</a>
+            <div class="dropdown-divider"></div>
+            {% if user.exam_id %}
+            <a class="dropdown-item" href="{% url 'image_create' request.user.exam_id %}">بارگذاری عکس</a>
+            {% else %}
+            <a class="dropdown-item disabled" href="" disab>بارگذاری عکس</a>
+            {% endif %}
+            {% if user.exam_id %}
+            <a class="dropdown-item" href="{% url 'image_list' %}">لیست عکس ها</a>
+            {% else %}
+            <a class="dropdown-item disabled" href="" disab>لیست عکس ها</a>
+            {% endif %}
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'question_list' %}">لیست سوال ها</a>         
+            <div class="dropdown-divider"></div>   
+            <a class="dropdown-item" href="{% url 'answer_list' %}">لیست جواب ها</a>         
+            <div class="dropdown-divider"></div>   
+            <a class="dropdown-item" href="{% url 'answer_result_user_list' %}">لیست نتایج آزمون های کاربران</a>         
+            <div class="dropdown-divider"></div>   
+            <a class="dropdown-item" href="{% url 'profile_admin' request.user.id %}">اطلاعات شخصی</a>
+            <div class="dropdown-divider"></div>
+            {% if user.exam_id %}
+            <a class="dropdown-item" href="{% url 'contactus_create' request.user.exam_id %}">تماس با ما</a>
+            {% else %}
+            <a class="dropdown-item disabled" href="" disab>تماس با ما</a>
+            {% endif %}
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'loginout-admin-exam' %}">خروج</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">کاربران شما</a>
+          <div class="dropdown-menu">
+            {% if user.exam_id %}
+            <a class="dropdown-item" href="{% url 'user_list' %}">اطلاعات کاربران</a>
+            <a class="dropdown-item" href="{% url 'review_list' %}">لیست نظرات</a>
+            {% else %}
+            <a class="dropdown-item" href="{% url 'exam_create' %}">ایجاد آزمون</a>
+            {% endif %}
+          </div>
+        </li>
+      </ul>
+    </div>
+    {% else %}
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'signup' %}">ثبت نام مدیران آزمون
+            <span class="visually-hidden"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'login-admin-exam' %}">ورود مدیران فرشگاه
+            <span class="visually-hidden"></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    {% endif %}
+    {% endif %}
+  </div>
+</nav>

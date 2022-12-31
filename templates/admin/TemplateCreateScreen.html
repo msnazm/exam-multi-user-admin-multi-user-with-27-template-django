@@ -1,0 +1,81 @@
+{% extends 'admin/index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+<a href="{% url 'admin_dashboard' %}">
+     برگشت
+</a>
+        <div class="row justify-content-md-center">
+                <div class="col-lg-5">
+                        <form method="POST" enctype="multipart/form-data" id="post-form" novalidate>
+                                {% csrf_token %}
+                                <div hidden>
+                                        <input type="text" value="{{ request.user.id }}" name="user" required="" id="id_user">
+                                </div>
+                                <fieldset>
+                                        <legend><h1 class="title-page">ایجاد تم</h1></legend>
+                                        <fieldset class="form-group" style="text-align: center;">           
+                                                <div class="wrap-custom-file">
+                                                        <i class="lni-close" id="clearone">x</i>
+                                                        {% if form.image.errors %}     
+                                                        {{ form.image }}
+                                                        {% for error in form.image.errors %}
+                                                        <div  style="text-align: right;color:#dc3545;">
+                                                        <b>{{ error|escape }}</b>    
+                                                        </div>
+                                                        {% endfor %}
+                                                        {% else %} 
+                                                        {% render_field form.image class="form-control" style="height:100%;border-color: rgb(5, 167, 26);" %}
+                                                        {% endif %}
+                                                        <label id="lableone" for="id_image">
+                                                        <span id="lableonespan" style="text-align: center;font-size: 13px;font-weight: bold;">انتخاب کنید</span>
+                                                        <i class="fa fa-plus-circle"></i>
+                                                        <div class="clearfix"></div>
+                                                        </label>
+                                                </div>
+                                                <div class="form-group" id="image-box-group">
+                                                        <div id="image-box" class="image-container"></div>
+                                                        <button class="btn btn-outline-info" id="crop-btn" style="width: 100%; margin-top: 10px; display: none;" type="button">اصلاح عکس</button>         
+                                                </div>
+                                        </fieldset>
+                                        <div class="form-group">
+                                                <label class="col-form-label mt-4" for="name">نام</label>
+                                                {% if form.name.errors %}
+                                                {% render_field form.name class="form-control is-invalid" %}
+                                                {% for error in form.name.errors %}
+                                                <div  style="text-align: right;color:#dc3545;">
+                                                                <b>{{ error|escape }}</b>    
+                                                </div>
+                                                {% endfor %}
+                                                {% elif form.name.value %}
+                                                {% render_field form.name class="form-control is-valid" %}
+                                                {% else %} 
+                                                {% render_field form.name class="form-control" %}
+                                                {% endif %}                                                
+                                        </div>
+                                        <div class="form-group">
+                                                <label class="col-form-label mt-4" for="code">کد</label>
+                                                {% if form.code.errors %}
+                                                {% render_field form.code class="form-control is-invalid" %}
+                                                {% for error in form.code.errors %}
+                                                <div  style="text-align: right;color:#dc3545;">
+                                                                <b>{{ error|escape }}</b>    
+                                                </div>
+                                                {% endfor %}
+                                                {% elif form.code.value %}
+                                                {% render_field form.code class="form-control is-valid" %}
+                                                {% else %} 
+                                                {% render_field form.code class="form-control" %}
+                                                {% endif %}                                                
+                                        </div>
+                                        <br>
+                                                <button type="submit" class="btn btn-primary" name="Save_list">ثبت</button>
+                                                <button type="submit" class="btn btn-primary" name="Save_and_add">ثبت و ایجاد یکی دیگر</button>
+                                </fieldset>
+                        </form>
+                </div>
+        </div>
+</div>
+{% endblock %}

@@ -1,0 +1,246 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+<a href="{% url 'exam-list' %}">
+     برگشت
+</a>
+        <div class="row justify-content-md-center">
+                <div class="col-lg-8">
+                        <form method="POST" enctype="multipart/form-data" id="post-form" data-subcategorys-url="{% url 'ajax_load_subcategorys' %}" data-subscategorys-url="{% url 'ajax_load_subscategorys' %}" novalidate>
+                                {% csrf_token %}
+                                <div hidden>
+                                        <input class="normal-example form-control" name="datecreate" id="id_datecreate"/>
+                                        <input class="normal-example form-control" name="datecreatealt" id="id_datecreatealt"/>
+                                        <input type="text" value="{{ request.user.id }}" name="user" required="" id="id_user">
+                                        <input type="text" value="0" name="slug" required="" id="id_slug">
+                                        <input type="text" value="{{ pk }}" name="exam" required="" id="id_exam">
+                                        <input type="text" value="0" name="confirmed" required="" id="id_confirmed">
+                                </div>
+                                <fieldset>
+                                        <legend><h1 class="title-page">ایجاد آزمون</h1></legend>
+                                        <fieldset class="form-group" style="text-align: center;">
+                                        <legend class="border-bottom mb-4">عکس *</legend>   
+                                                {% if form.image.errors %}     
+                                                {% for error in form.image.errors %}
+                                                <div  style="text-align: right;color:#dc3545;">
+                                                <b>{{ error|escape }}</b>    
+                                                </div>
+                                                {% endfor %}
+                                                {% endif %}              
+                                                <div class="wrap-custom-file">
+                                                        <i class="lni-close" id="clearone">x</i>
+                                                        {{ form.image }}
+                                                        <label id="lableone" for="id_image" style="background-color: rgb(214, 214, 214);">
+                                                        <span id="lableonespan" style="text-align: center;font-size: 13px;font-weight: bold;">انتخاب کنید</span>
+                                                        <i class="fa fa-plus-circle"></i>
+                                                        <div class="clearfix"></div>
+                                                        </label> 
+                                                </div> 
+                                                <div class="form-group" id="image-box-group">
+                                                        <div id="image-box" class="image-container"></div>
+                                                        <button class="btn btn-outline-info" id="crop-btn" style="width: 100%; margin-top: 10px; display: none;" type="button">اصلاح عکس</button>         
+                                                </div>
+                                        </fieldset>
+                                        <div class="form-group">
+                                          <label class="col-form-label mt-4" for="name">نام آزمون *</label>
+                                          {% if form.name.errors %}
+                                          {% render_field form.name class="form-control is-invalid" %}
+                                          {% for error in form.name.errors %}
+                                          <div  style="text-align: right;color:#dc3545;">
+                                                          <b>{{ error|escape }}</b>    
+                                          </div>
+                                          {% endfor %}
+                                          {% elif form.name.value %}
+                                          {% render_field form.name class="form-control is-valid" %}
+                                          {% else %} 
+                                          {% render_field form.name class="form-control" %}
+                                          {% endif %}                                                
+                                        </div>
+                                        <div class="form-group">
+                                                <label class="col-form-label mt-4" for="category">دسته اصلی *</label>
+                                                {% if form.category.errors %}
+                                                {% render_field form.category class="form-control is-invalid" %}
+                                                {% for error in form.category.errors %}
+                                                <div  style="text-align: right;color:#dc3545;">
+                                                                <b>{{ error|escape }}</b>    
+                                                </div>
+                                                {% endfor %}
+                                                {% elif form.category.value %}
+                                                {% render_field form.category class="form-control is-valid" %}
+                                                {% else %} 
+                                                {% render_field form.category class="form-control" %}
+                                                {% endif %}                                                                                      
+                                        </div>
+                                        <div class="form-group">
+                                                <label class="col-form-label mt-4" for="subcategory">دسته</label>
+                                                {% if form.subcategory.errors %}
+                                                {% render_field form.subcategory class="form-control is-invalid" %}
+                                                {% for error in form.subcategory.errors %}
+                                                <div  style="text-align: right;color:#dc3545;">
+                                                                <b>{{ error|escape }}</b>    
+                                                </div>
+                                                {% endfor %}
+                                                {% elif form.subcategory.value %}
+                                                {% render_field form.subcategory class="form-control is-valid" %}
+                                                {% else %} 
+                                                {% render_field form.subcategory class="form-control" %}
+                                                {% endif %}                                                
+                                        </div>
+                                        <div class="form-group">
+                                                <label class="col-form-label mt-4" for="subscategory">دسته</label>
+                                                {% if form.subscategory.errors %}
+                                                {% render_field form.subscategory class="form-control is-invalid" %}
+                                                {% for error in form.subscategory.errors %}
+                                                <div  style="text-align: right;color:#dc3545;">
+                                                                <b>{{ error|escape }}</b>    
+                                                </div>
+                                                {% endfor %}
+                                                {% elif form.subscategory.value %}
+                                                {% render_field form.subscategory class="form-control is-valid" %}
+                                                {% else %} 
+                                                {% render_field form.subscategory class="form-control" %}
+                                                {% endif %}                                                
+                                        </div>      
+                                        {{ form.media }}
+                                        <div class="form-group">
+                                                <label for="descreption" class="form-label mt-4">توضیحات *</label>
+                                                {% if form.descreption.errors %}
+                                                {% render_field form.descreption class="form-control is-invalid" %}
+                                                {% for error in form.descreption.errors %}
+                                                <div  style="text-align: right;color:#dc3545;">
+                                                                <b>{{ error|escape }}</b>    
+                                                </div>
+                                                {% endfor %}
+                                                {% elif form.descreption.value %}
+                                                {% render_field form.descreption class="form-control is-valid" %}
+                                                {% else %} 
+                                                {% render_field form.descreption class="form-control" %}
+                                                {% endif %}         
+                                        </div>
+                                        <br>
+                                                <button type="submit" class="btn btn-primary" name="Save_list">ثبت</button>
+                                                <button type="submit" class="btn btn-primary" name="Save_and_add">ثبت و ایجاد یکی دیگر</button>
+                                </fieldset>
+                        </form>
+                </div>
+        </div>
+</div>
+<script src="{% static 'jquery/jquery.min.js' %}"></script>
+<script>
+ $(function () {
+    $("#id_category").change(function () {
+        const url = $("#post-form").attr("data-subcategorys-url"); 
+        const categoryId = $(this).val();  
+        $.ajax({                       
+            url: url,                    
+            data: {
+                'category_id': categoryId       
+            },
+            success: function (data) {  
+                $("#id_subcategory").html(data); 
+            }
+        });
+    });
+
+    $("#id_subcategory").change(function () {
+        const url = $("#post-form").attr("data-subscategorys-url");  
+        const subcategoryId = $(this).val();  
+        $.ajax({                       
+            url: url,                   
+            data: {
+                'subcategory_id': subcategoryId      
+            },
+            success: function (data) {   
+                $("#id_subscategory").html(data);  
+            } 
+        });
+
+    });
+
+  	onload = function () {
+      var eb = document.getElementById('id_price');
+      eb.oninput = myHandler1;
+      eb.onpropertychange = eb.oninput; 
+      function myHandler1() {
+        document.getElementById('price_result').innerHTML = eb.value.toPersianLe();
+      }
+    };
+
+    $('input[type="file"]').each(function(){
+      var $file = $(this),
+          $label = $file.next('label'),
+          $labelText = $label.find('span'),
+          labelDefault = $labelText.text();
+            $('#clearone').on('click', function() {     
+              $('#id_image').val('');
+              $('#lableone').removeClass('file-ok');
+              $("#clearone").css({"display": "none"});
+           });
+    
+      $('#id_image').on('change', function(event){
+        var fileName = $file.val().split( '\\' ).pop(),
+            tmppath = URL.createObjectURL(event.target.files[0]);
+        $("#clearone").on('click', function(event){
+          $("#image-box-group").css({"display": "none"});
+          $('#lableone').addClass('file-ok')
+            .css('background-image', 'url(' + 0 + ')');
+          $('#lableone').removeClass('file-ok');
+          $("#lableonespan").css({"display": "block"});
+        });
+
+        if( fileName ){
+          $label
+          $('#lableone').addClass('file-ok')
+            .css('background-image', 'url(' + tmppath + ')');
+          //$labelText.text(fileName);
+          $("#image-box-group").css({"display": "block"});
+          $("#clearone").css({"display": "block"});
+          $("#lableonespan").css({"display": "none"});
+        }else{
+          $label.removeClass('file-ok');
+          $labelText.text(labelDefault);
+        }
+      });
+    });  
+
+    const imagebox = document.getElementById('image-box')
+
+    const crop_btn = document.getElementById('crop-btn')
+  
+    const input = document.getElementById('id_image')
+
+  
+    input.addEventListener('change', ()=>{
+      const img_data = input.files[0]
+      const url = URL.createObjectURL(img_data)
+      imagebox.innerHTML = `<img src="${url}" id="image" style="width:100%;">`
+      const image = document.getElementById('image')
+      document.getElementById('image-box').style.display = 'block'
+      document.getElementById('crop-btn').style.display = 'block'
+      const cropper = new Cropper(image, {
+      autoCropArea: 1,
+      viewMode: 1,
+      scalable: true,
+      zoomable: true,
+      movable: true,
+      minCropBoxWidth: 200,
+      minCropBoxHeight: 200,
+      })
+      crop_btn.addEventListener('click', ()=>{
+        cropper.getCroppedCanvas().toBlob((blob)=>{
+          let fileInputElement = document.getElementById('id_image');
+          let file = new File([blob], img_data.name,{type:"image/*", lastModified:new Date().getTime()});
+          let container = new DataTransfer();
+          container.items.add(file);
+          fileInputElement.files = container.files;
+          document.getElementById('image-box').style.display = 'none'
+          document.getElementById('crop-btn').style.display = 'none'
+          });
+        });
+    });		
+  });	
+</script>
+{% endblock %}

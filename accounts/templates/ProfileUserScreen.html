@@ -1,0 +1,90 @@
+{% extends 'user/index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+<a href="{% url 'dashboard_user' %}">
+     برگشت
+</a>
+        <div class="row justify-content-md-center">
+                <div class="col-lg-4">
+                        <form method="POST" novalidate>
+                                {% csrf_token %}
+                                <div hidden>
+                                        <input class="normal-example form-control" name="datecreate" id="id_datecreate"/>
+                                        <input class="normal-example form-control" name="datecreatealt" id="id_datecreatealt"/>
+                                        <input type="text" value="{{ request.user.id }}" name="user" required="" id="id_user">
+                                        <input type="text" value="0" name="slug" required="" id="id_slug">
+                                        <input type="text" value="{{ pk }}" name="exam" required="" id="id_exam">
+                                </div>
+                                <fieldset>
+                                        <legend><h1 class="title-page">بروزرسانی اطلاعات شخصی</h1></legend>
+                                        <div class="form-group">
+                                                <label class="col-form-label mt-4" for="name">نام</label>
+                                                {% if form.first_name.errors %}
+                                                {% render_field form.first_name class="form-control is-invalid" %}
+                                                {% for error in form.first_name.errors %}
+                                                <div  style="text-align: right;color:#dc3545;">
+                                                                <b>{{ error|escape }}</b>    
+                                                </div>
+                                                {% endfor %}
+                                                {% elif form.first_name.value %}
+                                                {% render_field form.first_name class="form-control is-valid" %}
+                                                {% else %} 
+                                                {% render_field form.first_name class="form-control" %}
+                                                {% endif %}                                                
+                                        </div>
+                                        <div class="form-group">
+                                                <label class="col-form-label mt-4" for="name">نام و نام خانوادگی</label>
+                                                {% if form.last_name.errors %}
+                                                {% render_field form.last_name class="form-control is-invalid" %}
+                                                {% for error in form.last_name.errors %}
+                                                <div  style="text-align: right;color:#dc3545;">
+                                                                <b>{{ error|escape }}</b>    
+                                                </div>
+                                                {% endfor %}
+                                                {% elif form.last_name.value %}
+                                                {% render_field form.last_name class="form-control is-valid" %}
+                                                {% else %} 
+                                                {% render_field form.last_name class="form-control" %}
+                                                {% endif %}                                                
+                                        </div>
+                                        <div class="form-group">
+                                                <label class="col-form-label mt-4" for="name">کد ملی (اختیاری)</label>
+                                                {% if form.meli.errors %}
+                                                {% render_field form.meli class="form-control is-invalid" %}
+                                                {% for error in form.meli.errors %}
+                                                <div  style="text-align: right;color:#dc3545;">
+                                                                <b>{{ error|escape }}</b>    
+                                                </div>
+                                                {% endfor %}
+                                                {% elif form.meli.value %}
+                                                {% render_field form.meli class="form-control is-valid" %}
+                                                {% else %} 
+                                                {% render_field form.meli class="form-control" %}
+                                                {% endif %}                                                
+                                        </div>
+                                        <div class="form-group">
+                                                <label class="col-form-label mt-4" for="name">آدرس (اختیاری)</label>
+                                                {% if form.address.errors %}
+                                                {% render_field form.address class="form-control is-invalid" %}
+                                                {% for error in form.address.errors %}
+                                                <div  style="text-align: right;color:#dc3545;">
+                                                                <b>{{ error|escape }}</b>    
+                                                </div>
+                                                {% endfor %}
+                                                {% elif form.address.value %}
+                                                {% render_field form.address class="form-control is-valid" %}
+                                                {% else %} 
+                                                {% render_field form.address class="form-control" %}
+                                                {% endif %}                                                
+                                        </div>
+                                        <br>
+                                        <button type="submit" class="btn btn-primary">ثبت</button>
+                                </fieldset>
+                        </form>
+                </div>
+        </div>
+</div>
+{% endblock %}

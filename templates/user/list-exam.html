@@ -1,0 +1,32 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+{% include 'carousel.html' %}  
+<div class="container">
+    <div class="row justify-content-md-center">
+        {% for exams in exams %}
+        <div class="col-lg-3">
+                <div class="card mb-3">
+                    <div class="card-body">
+                    <h5 class="card-title">{{ exams.name }}</h5>
+                    <h6 class="card-subtitle text-muted">{{ exams.descreption|slice:26 }}...</h6>
+                    </div>
+                    {% if exams.image %}
+                    <img class="imge-card" src="{% static exams.image.url %}" alt="{{ exams.name }}">
+                    {% else %}
+                    <img class="imge-card" src="static/img/placeholder.png" alt="{{ exams.name }}">
+                    {% endif %}
+                    <div class="card-body">
+                    <p class="card-text" hidden>{{ exams.name }}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                    </ul>
+                    <div class="card-body">
+                        <a href="{% url 'quiz-list-exam' exams.pk %}" class="stretched-link">مشاهده</a>
+                    </div>
+                </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endblock %}
+</div>

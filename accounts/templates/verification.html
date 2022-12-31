@@ -1,0 +1,58 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<section class="register section-padding">
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-lg-5 col-md-12 col-xs-12">
+<div class="register-form login-area">
+<h6 style="padding-top: 100px;">
+    به inbox ایمیل خودتون مراجعه کرده و کد تایید را ثبت کنید.
+</h6>
+<h3>
+    ثبت کد تایید
+</h3>
+<div id="flash">
+  {% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+      {% if message.tags == "success" %}
+      <div class="alert alert-dismissible alert-success">
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      </div>
+      {% endif %}
+      {% if message.tags == "error" %}
+      <div class="alert alert-dismissible alert-danger"">
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      </div>
+      {% endif %}
+      {% endfor %}
+  </ul>
+  {% endif %}
+</div>
+
+<form class="login-form" method="POST">
+    {% csrf_token %}
+
+<div class="form-group {% if form.verification.errors %}has_error{% elif form.is_bound %}has_success{% endif %}">
+<div class="input-icon">
+<input type="number" class="form-control" id="verification" name="verification" placeholder="کد تایید را وارد کنید">
+</div>
+</div>
+<div class="text-center">
+  <br>
+<button type="submit" class="btn btn-common log-btn">تایید</button>
+<a href="{% url 'adminexam_resend' %}" class="btn btn-link">ارسال دوباره کد تایید</a>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</section>
+<script type="text/javascript">
+  setTimeout(function () {
+   $('#flash').fadeOut('fast');
+   },3000);
+</script>
+{% endblock %}

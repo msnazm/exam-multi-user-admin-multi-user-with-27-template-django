@@ -1,0 +1,27 @@
+{% extends 'user/index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="row justify-content-md-center">
+        <div class="col-lg-4">
+                <form method="POST">
+                        {% csrf_token %}
+                        <fieldset>
+                                <legend><h1 class="title-page">ورود</h1></legend>
+                                <div class="alert alert-danger"  align="center">
+                                نام کاربری و رمز عبور شما مطابقت ندارد، لطفاً دوباره امتحان کنید.
+                                </div>
+                                <div class="form-group">
+                                        <label class="col-form-label mt-4" for="username">نام کاربری</label>
+                                        <input type="text" class="form-control" placeholder="نام کاربری" name="usernameu" id="usernameu">
+                                </div>
+                                <div class="form-group">
+                                        <label for="Password" class="form-label mt-4">رمز کاربر</label>
+                                        <input type="password" class="form-control" id="passwordu" name="passwordu" placeholder="رمز کاربر">
+                                </div>
+                                <button type="submit" class="btn btn-primary">ورود</button>
+                        </fieldset>
+                </form>
+        </div>
+</div>
+{% endblock %}

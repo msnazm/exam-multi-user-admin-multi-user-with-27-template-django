@@ -1,0 +1,118 @@
+{% extends 'user/index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load l10n %}
+{% load humanize %}
+{% block content %}
+{% for question in question %}
+<div>
+  <a href="{% url 'quiz_start' question.quiz.pk question.quiz.slug %}">
+       برگشت
+  </a>
+  <div class="row justify-content-md-center">
+    <div class="col-lg-8">
+      <div class="alert alert-danger" id="alert_message" style="display: none;"></div>
+          {% if messages %}
+          {% for message in messages %}
+              <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
+          {% endfor %}
+          {% endif %}
+          <div align="center"><h3>{{ question.quiz.name }} آزمون</h3></div>
+          <div align="center"><h5>سوال {{ question_count }} از {{ question_count_all }}:</h5><div align="left" id="displaytimer"><b></b></div></div>
+          <fieldset class="form-group">
+            <legend class="mt-4">{{ question.descreption|safe }}</legend>
+            <table class="table table-hover">
+              <tbody>
+              {% for answer in answer %}
+                <tr>
+                  <td>
+                    <div class="form-check .d-block" style="display: grid;">
+                      <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="answer_quiz" onclick="insertvalue();" id="msn{{ answer.pk }}" value="{{ answer.pk }}">
+                        <div class="col">{{ answer.descreption|safe }}</div>
+                      </label>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </fieldset>
+          <form method="POST" novalidate>
+            {% csrf_token %}
+            <button type="submit" id="id_send" style="display: none;" class="btn btn-primary">بعدی</button>  
+            <div hidden>
+            <input id='timespent_s' type='text' name="timespent_s" value="">
+            <input id='timespent_m' type='text' name="timespent_m" value="">
+            <input id='timespent_h' type='text' name="timespent_h" value="">
+            <input type="text" value="{{ question.pk }}" name="question" id="id_question">
+            <input type="text" value="{{ question.quiz_id }}" name="quiz" id="id_quiz">
+            <input class="text" name="datecreate" id="id_datecreate"/>
+            <input class="text" name="datecreatealt" id="id_datecreatealt"/>
+            <input type="text" value="{{ request.user.id }}" name="user" id="id_user">
+            </div>
+            {% endfor %}
+            <input type="hidden" name="answer" id="answer">
+          </form>
+          <button class="btn btn-info text-center" onclick="result();">بعدی</button>
+    </div>
+  </div>
+{% block script %}
+<script src="{% static 'jquery/jquery.min.js' %}"></script>
+<script>
+    function insertvalue() {
+      answer_insert = document.getElementById('answer').value;
+      {% for answer in answer %}
+      if (document.getElementById('msn{{ answer.pk }}').checked) {
+        document.getElementById('answer').value = document.getElementById('msn{{ answer.pk }}').value 
+      }
+      {% endfor %}
+    }
+    function startTimer() {
+      var tobj = document.getElementById("timespent")
+      const timer=document.getElementById('displaytimer')
+      var t = "0:00:00";
+      var s = 00;
+      var d = new Date();
+      var timeint = setInterval(function () {
+        s += 1;
+        d.setHours("0");
+        d.setMinutes("0");
+        d.setSeconds(s);
+        hour = d.getHours();
+        min = d.getMinutes();
+        sec = d.getSeconds();
+        if (sec < 10) sec = "0" + sec;
+        document.getElementById("timespent_s").value = sec;
+        document.getElementById("timespent_m").value = min;
+        document.getElementById("timespent_h").value = hour;
+        //document.getElementById("timespent").value = hour + ":" + min + ":" + sec;
+        timer.innerHTML ="<b> زمان سنج: "+hour+ ":" +min + ":" + sec+"</b>"
+        //inputtag.value = t
+      }, 1000);
+      //tobj.value = t;
+    }
+    if (window.addEventListener) {              
+      window.addEventListener("load", startTimer);
+    } else if (window.attachEvent) {                 
+      window.attachEvent("onload", startTimer);
+    }
+  function result(){
+		var question = document.getElementById("id_question").value;
+		var datecreate = document.getElementById("id_datecreate").value;
+		var datecreatealt = document.getElementById("id_datecreatealt").value;
+		var answer = document.getElementById("answer").value;
+		if (question == "" | datecreate == "" | datecreatealt == ""| answer == ""){
+			if (answer == ""){
+        document.getElementById("alert_message").style.display = "block";
+        document.getElementById("alert_message").innerText = "جواب سوال را انتخاب کنید.";
+			}
+		}else if($("#id_question").val()| $("#id_datecreate").val()| $("#id_datecreatealt").val()| $("#answer").val() ){
+			var btn_sub = document.getElementById("id_send");
+			btn_sub.form.submit();
+		}
+	}
+</script>
+{% endblock script %}
+{% endblock %}

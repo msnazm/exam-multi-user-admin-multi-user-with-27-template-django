@@ -1,0 +1,68 @@
+{% extends 'index.html' %}
+{% load widget_tweaks %}
+{% load tz %}
+{% block content %}
+<div class="col-md-6">
+<div class="card">
+  <div class="card-body register-card-body">
+    <p class="login-box-msg">تغییر رمز کاربر</p>
+    <form method="post" novalidate>
+      {% csrf_token %}
+
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" value="{{ form.username.value|default_if_none:"" }}" name="username" id="id_username" placeholder="نام کاربری" disabled>
+        <div class="input-group-append">
+          <span class="fa fa-user input-group-text"></span>
+        </div>
+      </div>
+      {% if form.username.errors %}
+      {% for error in form.username.errors %}
+   <div  style="text-align: right;color:#dc3545;">
+              <b>{{ error|escape }}</b>    
+              </div>
+      {% endfor %}
+      {% endif %}
+
+      <div class="input-group mb-3">
+        <input type="password" class="form-control" value="{{ form.password1.value|default_if_none:"" }}" name="password1" id="id_password1" placeholder="رمز عبور">
+        <div class="input-group-append">
+          <span class="fa fa-lock input-group-text"></span>
+        </div>
+      </div>
+      {% if form.password1.errors %}
+      {% for error in form.password1.errors %}
+   <div  style="text-align: right;color:#dc3545;">
+              <b>{{ error|escape }}</b>    
+              </div>
+      {% endfor %}
+      {% endif %}
+      <div class="input-group mb-3">
+        <input type="password" class="form-control" value="{{ form.password2.value|default_if_none:"" }}" name="password2" id="id_password2" placeholder="تکرار رمز عبور">
+        <div class="input-group-append">
+          <span class="fa fa-lock input-group-text"></span>
+        </div>
+      </div>
+      {% if form.password2.errors %}
+      {% for error in form.password2.errors %}
+   <div  style="text-align: right;color:#dc3545;">
+              <b>{{ error|escape }}</b>    
+              </div>
+      {% endfor %}
+      {% endif %}
+      <div class="row">
+        <div class="col-8">
+
+        </div>
+        <!-- /.col -->
+        <div class="col-4">
+          <button type="submit" class="btn btn-primary btn-block btn-flat">ثبت تغییر</button>
+        </div>
+        <!-- /.col -->
+      </div>
+    </form>
+
+  </div>
+  <!-- /.form-box -->
+</div><!-- /.card -->
+</div>
+{% endblock %}
